@@ -24,6 +24,11 @@
 		D46716472757929D0041DD14 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716442757929D0041DD14 /* DeepLink.swift */; };
 		D46716482757929D0041DD14 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716452757929D0041DD14 /* Router.swift */; };
 		D467164B275792AD0041DD14 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164A275792AD0041DD14 /* UIColor.swift */; };
+		D467164D2757B19A0041DD14 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164C2757B19A0041DD14 /* UITableView.swift */; };
+		D467164F2757B1BB0041DD14 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164E2757B1BB0041DD14 /* UIView.swift */; };
+		D46716522757B1F60041DD14 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716512757B1F60041DD14 /* LaunchCell.swift */; };
+		D46716542757B2410041DD14 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716532757B2410041DD14 /* UILabel.swift */; };
+		D46716562757B2920041DD14 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716552757B2920041DD14 /* UIFont.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +70,11 @@
 		D46716442757929D0041DD14 /* DeepLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		D46716452757929D0041DD14 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D467164A275792AD0041DD14 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		D467164C2757B19A0041DD14 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
+		D467164E2757B1BB0041DD14 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		D46716512757B1F60041DD14 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
+		D46716532757B2410041DD14 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		D46716552757B2920041DD14 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				D467160027578B410041DD14 /* AppDelegate.swift */,
-				D4671630275791BE0041DD14 /* Flows */,
+				D4671630275791BE0041DD14 /* App */,
 				D467163F275792730041DD14 /* Services */,
 				D4671642275792900041DD14 /* Helpers */,
 				D467160927578B440041DD14 /* Assets.xcassets */,
@@ -143,7 +153,7 @@
 			path = SpaceXLaunchesUITests;
 			sourceTree = "<group>";
 		};
-		D4671630275791BE0041DD14 /* Flows */ = {
+		D4671630275791BE0041DD14 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				D4671631275791D00041DD14 /* AppCoordinator.swift */,
@@ -151,12 +161,13 @@
 				D4671635275792090041DD14 /* LaunchesList */,
 				D467163A275792520041DD14 /* LaunchDetails */,
 			);
-			path = Flows;
+			path = App;
 			sourceTree = "<group>";
 		};
 		D4671635275792090041DD14 /* LaunchesList */ = {
 			isa = PBXGroup;
 			children = (
+				D46716502757B1DD0041DD14 /* Cells */,
 				D4671636275792200041DD14 /* LaunchesListController.swift */,
 				D4671637275792200041DD14 /* LaunchesListViewModel.swift */,
 			);
@@ -195,8 +206,20 @@
 			isa = PBXGroup;
 			children = (
 				D467164A275792AD0041DD14 /* UIColor.swift */,
+				D467164C2757B19A0041DD14 /* UITableView.swift */,
+				D467164E2757B1BB0041DD14 /* UIView.swift */,
+				D46716532757B2410041DD14 /* UILabel.swift */,
+				D46716552757B2920041DD14 /* UIFont.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D46716502757B1DD0041DD14 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D46716512757B1F60041DD14 /* LaunchCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -330,15 +353,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				D46716482757929D0041DD14 /* Router.swift in Sources */,
+				D46716562757B2920041DD14 /* UIFont.swift in Sources */,
 				D467164B275792AD0041DD14 /* UIColor.swift in Sources */,
 				D467163E275792680041DD14 /* LaunchDetailsController.swift in Sources */,
 				D4671634275791EE0041DD14 /* AppNavigationController.swift in Sources */,
 				D4671639275792200041DD14 /* LaunchesListViewModel.swift in Sources */,
 				D4671632275791D00041DD14 /* AppCoordinator.swift in Sources */,
+				D46716542757B2410041DD14 /* UILabel.swift in Sources */,
 				D4671638275792200041DD14 /* LaunchesListController.swift in Sources */,
 				D4671641275792860041DD14 /* Services.swift in Sources */,
+				D46716522757B1F60041DD14 /* LaunchCell.swift in Sources */,
 				D467163D275792680041DD14 /* LaunchDetailsViewModel.swift in Sources */,
 				D46716472757929D0041DD14 /* DeepLink.swift in Sources */,
+				D467164F2757B1BB0041DD14 /* UIView.swift in Sources */,
+				D467164D2757B19A0041DD14 /* UITableView.swift in Sources */,
 				D467160127578B410041DD14 /* AppDelegate.swift in Sources */,
 				D46716462757929D0041DD14 /* Coordinator.swift in Sources */,
 			);
