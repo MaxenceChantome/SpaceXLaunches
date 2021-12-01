@@ -8,14 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		D467160127578B410041DD14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467160027578B410041DD14 /* AppDelegate.swift */; };
-		D467160327578B410041DD14 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467160227578B410041DD14 /* SceneDelegate.swift */; };
-		D467160527578B410041DD14 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467160427578B410041DD14 /* ViewController.swift */; };
-		D467160827578B410041DD14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D467160627578B410041DD14 /* Main.storyboard */; };
 		D467160A27578B440041DD14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D467160927578B440041DD14 /* Assets.xcassets */; };
 		D467160D27578B440041DD14 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D467160B27578B440041DD14 /* LaunchScreen.storyboard */; };
 		D467161827578B440041DD14 /* SpaceXLaunchesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467161727578B440041DD14 /* SpaceXLaunchesTests.swift */; };
 		D467162227578B440041DD14 /* SpaceXLaunchesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467162127578B440041DD14 /* SpaceXLaunchesUITests.swift */; };
 		D467162427578B440041DD14 /* SpaceXLaunchesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467162327578B440041DD14 /* SpaceXLaunchesUITestsLaunchTests.swift */; };
+		D4671632275791D00041DD14 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671631275791D00041DD14 /* AppCoordinator.swift */; };
+		D4671634275791EE0041DD14 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671633275791EE0041DD14 /* AppNavigationController.swift */; };
+		D4671638275792200041DD14 /* LaunchesListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671636275792200041DD14 /* LaunchesListController.swift */; };
+		D4671639275792200041DD14 /* LaunchesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671637275792200041DD14 /* LaunchesListViewModel.swift */; };
+		D467163D275792680041DD14 /* LaunchDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467163B275792680041DD14 /* LaunchDetailsViewModel.swift */; };
+		D467163E275792680041DD14 /* LaunchDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467163C275792680041DD14 /* LaunchDetailsController.swift */; };
+		D4671641275792860041DD14 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671640275792860041DD14 /* Services.swift */; };
+		D46716462757929D0041DD14 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716432757929D0041DD14 /* Coordinator.swift */; };
+		D46716472757929D0041DD14 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716442757929D0041DD14 /* DeepLink.swift */; };
+		D46716482757929D0041DD14 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716452757929D0041DD14 /* Router.swift */; };
+		D467164B275792AD0041DD14 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164A275792AD0041DD14 /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,9 +46,6 @@
 /* Begin PBXFileReference section */
 		D46715FD27578B410041DD14 /* SpaceXLaunches.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpaceXLaunches.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D467160027578B410041DD14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D467160227578B410041DD14 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		D467160427578B410041DD14 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		D467160727578B410041DD14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D467160927578B440041DD14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D467160C27578B440041DD14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D467160E27578B440041DD14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +54,17 @@
 		D467161D27578B440041DD14 /* SpaceXLaunchesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SpaceXLaunchesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D467162127578B440041DD14 /* SpaceXLaunchesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXLaunchesUITests.swift; sourceTree = "<group>"; };
 		D467162327578B440041DD14 /* SpaceXLaunchesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceXLaunchesUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D4671631275791D00041DD14 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		D4671633275791EE0041DD14 /* AppNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
+		D4671636275792200041DD14 /* LaunchesListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchesListController.swift; sourceTree = "<group>"; };
+		D4671637275792200041DD14 /* LaunchesListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchesListViewModel.swift; sourceTree = "<group>"; };
+		D467163B275792680041DD14 /* LaunchDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchDetailsViewModel.swift; sourceTree = "<group>"; };
+		D467163C275792680041DD14 /* LaunchDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchDetailsController.swift; sourceTree = "<group>"; };
+		D4671640275792860041DD14 /* Services.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		D46716432757929D0041DD14 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		D46716442757929D0041DD14 /* DeepLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
+		D46716452757929D0041DD14 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		D467164A275792AD0041DD14 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,9 +116,9 @@
 			isa = PBXGroup;
 			children = (
 				D467160027578B410041DD14 /* AppDelegate.swift */,
-				D467160227578B410041DD14 /* SceneDelegate.swift */,
-				D467160427578B410041DD14 /* ViewController.swift */,
-				D467160627578B410041DD14 /* Main.storyboard */,
+				D4671630275791BE0041DD14 /* Flows */,
+				D467163F275792730041DD14 /* Services */,
+				D4671642275792900041DD14 /* Helpers */,
 				D467160927578B440041DD14 /* Assets.xcassets */,
 				D467160B27578B440041DD14 /* LaunchScreen.storyboard */,
 				D467160E27578B440041DD14 /* Info.plist */,
@@ -125,6 +141,62 @@
 				D467162327578B440041DD14 /* SpaceXLaunchesUITestsLaunchTests.swift */,
 			);
 			path = SpaceXLaunchesUITests;
+			sourceTree = "<group>";
+		};
+		D4671630275791BE0041DD14 /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+				D4671631275791D00041DD14 /* AppCoordinator.swift */,
+				D4671633275791EE0041DD14 /* AppNavigationController.swift */,
+				D4671635275792090041DD14 /* LaunchesList */,
+				D467163A275792520041DD14 /* LaunchDetails */,
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
+		D4671635275792090041DD14 /* LaunchesList */ = {
+			isa = PBXGroup;
+			children = (
+				D4671636275792200041DD14 /* LaunchesListController.swift */,
+				D4671637275792200041DD14 /* LaunchesListViewModel.swift */,
+			);
+			path = LaunchesList;
+			sourceTree = "<group>";
+		};
+		D467163A275792520041DD14 /* LaunchDetails */ = {
+			isa = PBXGroup;
+			children = (
+				D467163C275792680041DD14 /* LaunchDetailsController.swift */,
+				D467163B275792680041DD14 /* LaunchDetailsViewModel.swift */,
+			);
+			path = LaunchDetails;
+			sourceTree = "<group>";
+		};
+		D467163F275792730041DD14 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D4671640275792860041DD14 /* Services.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D4671642275792900041DD14 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D4671649275792A10041DD14 /* Extensions */,
+				D46716432757929D0041DD14 /* Coordinator.swift */,
+				D46716442757929D0041DD14 /* DeepLink.swift */,
+				D46716452757929D0041DD14 /* Router.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		D4671649275792A10041DD14 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D467164A275792AD0041DD14 /* UIColor.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +305,6 @@
 			files = (
 				D467160D27578B440041DD14 /* LaunchScreen.storyboard in Resources */,
 				D467160A27578B440041DD14 /* Assets.xcassets in Resources */,
-				D467160827578B410041DD14 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,9 +329,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D467160527578B410041DD14 /* ViewController.swift in Sources */,
+				D46716482757929D0041DD14 /* Router.swift in Sources */,
+				D467164B275792AD0041DD14 /* UIColor.swift in Sources */,
+				D467163E275792680041DD14 /* LaunchDetailsController.swift in Sources */,
+				D4671634275791EE0041DD14 /* AppNavigationController.swift in Sources */,
+				D4671639275792200041DD14 /* LaunchesListViewModel.swift in Sources */,
+				D4671632275791D00041DD14 /* AppCoordinator.swift in Sources */,
+				D4671638275792200041DD14 /* LaunchesListController.swift in Sources */,
+				D4671641275792860041DD14 /* Services.swift in Sources */,
+				D467163D275792680041DD14 /* LaunchDetailsViewModel.swift in Sources */,
+				D46716472757929D0041DD14 /* DeepLink.swift in Sources */,
 				D467160127578B410041DD14 /* AppDelegate.swift in Sources */,
-				D467160327578B410041DD14 /* SceneDelegate.swift in Sources */,
+				D46716462757929D0041DD14 /* Coordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,14 +377,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		D467160627578B410041DD14 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D467160727578B410041DD14 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D467160B27578B440041DD14 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -444,7 +516,6 @@
 				INFOPLIST_FILE = SpaceXLaunches/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -472,7 +543,6 @@
 				INFOPLIST_FILE = SpaceXLaunches/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
