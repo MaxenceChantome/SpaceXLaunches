@@ -16,7 +16,7 @@ class AppNavigationController: UINavigationController {
     init() {
         super.init(nibName: nil, bundle: nil)
         
-        view.backgroundColor = .blue
+        view.backgroundColor = .primary
         setupBarUI()
     }
     
@@ -25,9 +25,11 @@ class AppNavigationController: UINavigationController {
     }
     
     func setupBarUI() {
+        navigationBar.prefersLargeTitles = true
         navigationBar.barTintColor = .primary
         navigationBar.isTranslucent = false
         navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationBar.tintColor = .white
     }
 }

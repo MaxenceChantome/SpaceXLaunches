@@ -24,6 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func makeCoordinator() -> Coordinator {
-        return AppCoordinator(router: Router(rootController: rootController), services: Services())
+        return AppCoordinator(router: Router(rootController: rootController), apiService: ApiService())
     }
 }

@@ -9,6 +9,14 @@ import UIKit
 
 extension UIFont {
     class var title: UIFont {
-        return UIFont.systemFont(ofSize: 18, weight: .semibold)
+        return UIFont.systemFont(ofSize: 24, weight: .semibold)
+    }
+    
+    class var subtitle: UIFont {
+        return UIFont.systemFont(ofSize: 22, weight: .semibold)
+    }
+    
+    class var bodyMedium: UIFont {
+        return UIFont.systemFont(ofSize: 16, weight: .medium)
     }
 }

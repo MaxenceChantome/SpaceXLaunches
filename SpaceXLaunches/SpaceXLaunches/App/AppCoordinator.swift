@@ -9,11 +9,11 @@ import Foundation
 
 class AppCoordinator: Coordinator {
     private let router: Router
-    private let services: Services
+    private let apiService: ApiServiceType
     
-    init(router: Router, services: Services) {
+    init(router: Router, apiService: ApiServiceType) {
         self.router = router
-        self.services = services
+        self.apiService = apiService
     }
     
     func start(with deeplink: DeepLink?) {
@@ -22,7 +22,7 @@ class AppCoordinator: Coordinator {
     }
     
     private func showLaunchesList() {
-        let viewModel = LaunchesListViewModel()
+        let viewModel = LaunchesListViewModel(apiService: apiService)
         let controller = LaunchesListController(viewModel: viewModel)
         
         router.push(controller, animated: false)

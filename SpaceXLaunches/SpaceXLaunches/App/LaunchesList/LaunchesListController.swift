@@ -29,12 +29,6 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    private func setupTableView() {
-        tableView.registerCellClass(LaunchCell.self)
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,11 +36,23 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
         viewModel.delegate = self
         setupTableView()
         setupUI()
+        title = "SpaceX launches"
     }
     
+    private func setupTableView() {
+        tableView.backgroundColor = .clear
+        tableView.registerCellClass(LaunchCell.self)
+    }
+
     private func setupUI() {
-        view.addSubview(tableView)
+        view.addSubviews([tableView])
         
+        // set gradient
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [UIColor.primary.cgColor, UIColor.secondary.cgColor]
+        view.layer.insertSublayer(gradientLayer, at: 0)
+
         tableView.bindConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
