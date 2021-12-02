@@ -12,13 +12,15 @@ import UIKit
 enum LaunchDetailsSection: Int, CaseIterable {
     case mission
     case rocket
+    case images
     
     var columnCount: Int {
         switch self {
         case .mission:
             return 1
-            
         case .rocket:
+            return 2
+        case .images:
             return 2
         }
     }
@@ -29,6 +31,8 @@ enum LaunchDetailsSection: Int, CaseIterable {
             return "Mission details"
         case .rocket:
             return "Rocket details"
+        case .images:
+            return "Images"
         }
     }
 }
@@ -36,11 +40,12 @@ enum LaunchDetailsSection: Int, CaseIterable {
 enum LaunchDetailsCells: Hashable {
     case missionDetails(MissionDetailsCellViewData)
     case rocketDetails(RocketDetailsCellViewData)
+    case images(ImageDetailsCellViewData)
 }
 
 // MARK: Launches view model
 protocol LaunchDetailsDelegate: AnyObject {
-    func reloadData(with mission: [LaunchDetailsCells], rocket: [LaunchDetailsCells])
+    func reloadData(with mission: [LaunchDetailsCells], rocket: [LaunchDetailsCells], images: [LaunchDetailsCells])
     func showError(error: String)
 }
 
@@ -68,7 +73,8 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
                 if let data = graphQLResult.data?.launch {
                     let mission = self.getFormattedMissionDetails(mission: data)
                     let rocket = self.getFormattedRocketDetails(rocket: data.rocket)
-                    self.delegate?.reloadData(with: mission, rocket: rocket)
+                    let images = self.getFormattedInages(images: data.links)
+                    self.delegate?.reloadData(with: mission, rocket: rocket, images: images)
                 }
                 
             case .failure(let error):
@@ -102,9 +108,15 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
             RocketDetailsCellViewData(value: "\(rocket.rocket?.costPerLaunch ?? 0) $", detail: "Cost per launch"),
             RocketDetailsCellViewData(value: "\(rocket.rocket?.successRatePct ?? 0) %", detail: "Success rate")
         ]
-        
         return cellData.map { LaunchDetailsCells.rocketDetails($0) }
+    }
+    
+    private func getFormattedInages(images: LaunchQuery.Data.Launch.Link?) -> [LaunchDetailsCells] {
+        guard let images = images?.flickrImages else { return  [LaunchDetailsCells]() }
         
+        let urls = images.compactMap { URL(string: $0 ?? "") }
+        let cellData = urls.map { ImageDetailsCellViewData(imageUrl: $0) }
+        return cellData.map { LaunchDetailsCells.images($0) }
     }
 }
 

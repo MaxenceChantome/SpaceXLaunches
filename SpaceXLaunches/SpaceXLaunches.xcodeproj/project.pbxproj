@@ -42,6 +42,7 @@
 		D4671673275914800041DD14 /* LaunchDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671672275914800041DD14 /* LaunchDetailsCell.swift */; };
 		D46716752759166E0041DD14 /* RocketDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716742759166E0041DD14 /* RocketDetailsCell.swift */; };
 		D467167727594CDC0041DD14 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467167627594CDC0041DD14 /* SectionHeader.swift */; };
+		D4671679275967D70041DD14 /* ImageDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671678275967D70041DD14 /* ImageDetailsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +101,7 @@
 		D4671672275914800041DD14 /* LaunchDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchDetailsCell.swift; sourceTree = "<group>"; };
 		D46716742759166E0041DD14 /* RocketDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDetailsCell.swift; sourceTree = "<group>"; };
 		D467167627594CDC0041DD14 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		D4671678275967D70041DD14 /* ImageDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,6 +274,7 @@
 				D4671672275914800041DD14 /* LaunchDetailsCell.swift */,
 				D46716742759166E0041DD14 /* RocketDetailsCell.swift */,
 				D467167627594CDC0041DD14 /* SectionHeader.swift */,
+				D4671678275967D70041DD14 /* ImageDetailsCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				D46716652757ED410041DD14 /* String.swift in Sources */,
 				D467164B275792AD0041DD14 /* UIColor.swift in Sources */,
 				D467167727594CDC0041DD14 /* SectionHeader.swift in Sources */,
+				D4671679275967D70041DD14 /* ImageDetailsCell.swift in Sources */,
 				D467163E275792680041DD14 /* LaunchDetailsController.swift in Sources */,
 				D4671634275791EE0041DD14 /* AppNavigationController.swift in Sources */,
 				D4671639275792200041DD14 /* LaunchesListViewModel.swift in Sources */,
