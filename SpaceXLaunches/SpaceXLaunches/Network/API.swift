@@ -275,8 +275,12 @@ public final class LaunchQuery: GraphQLQuery {
               __typename
               meters
             }
-            description
             cost_per_launch
+            success_rate_pct
+            engines {
+              __typename
+              number
+            }
           }
         }
       }
@@ -566,8 +570,9 @@ public final class LaunchQuery: GraphQLQuery {
               GraphQLField("height", type: .object(Height.selections)),
               GraphQLField("mass", type: .object(Mass.selections)),
               GraphQLField("diameter", type: .object(Diameter.selections)),
-              GraphQLField("description", type: .scalar(String.self)),
               GraphQLField("cost_per_launch", type: .scalar(Int.self)),
+              GraphQLField("success_rate_pct", type: .scalar(Int.self)),
+              GraphQLField("engines", type: .object(Engine.selections)),
             ]
           }
 
@@ -577,8 +582,8 @@ public final class LaunchQuery: GraphQLQuery {
             self.resultMap = unsafeResultMap
           }
 
-          public init(height: Height? = nil, mass: Mass? = nil, diameter: Diameter? = nil, description: String? = nil, costPerLaunch: Int? = nil) {
-            self.init(unsafeResultMap: ["__typename": "Rocket", "height": height.flatMap { (value: Height) -> ResultMap in value.resultMap }, "mass": mass.flatMap { (value: Mass) -> ResultMap in value.resultMap }, "diameter": diameter.flatMap { (value: Diameter) -> ResultMap in value.resultMap }, "description": description, "cost_per_launch": costPerLaunch])
+          public init(height: Height? = nil, mass: Mass? = nil, diameter: Diameter? = nil, costPerLaunch: Int? = nil, successRatePct: Int? = nil, engines: Engine? = nil) {
+            self.init(unsafeResultMap: ["__typename": "Rocket", "height": height.flatMap { (value: Height) -> ResultMap in value.resultMap }, "mass": mass.flatMap { (value: Mass) -> ResultMap in value.resultMap }, "diameter": diameter.flatMap { (value: Diameter) -> ResultMap in value.resultMap }, "cost_per_launch": costPerLaunch, "success_rate_pct": successRatePct, "engines": engines.flatMap { (value: Engine) -> ResultMap in value.resultMap }])
           }
 
           public var __typename: String {
@@ -617,21 +622,30 @@ public final class LaunchQuery: GraphQLQuery {
             }
           }
 
-          public var description: String? {
-            get {
-              return resultMap["description"] as? String
-            }
-            set {
-              resultMap.updateValue(newValue, forKey: "description")
-            }
-          }
-
           public var costPerLaunch: Int? {
             get {
               return resultMap["cost_per_launch"] as? Int
             }
             set {
               resultMap.updateValue(newValue, forKey: "cost_per_launch")
+            }
+          }
+
+          public var successRatePct: Int? {
+            get {
+              return resultMap["success_rate_pct"] as? Int
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "success_rate_pct")
+            }
+          }
+
+          public var engines: Engine? {
+            get {
+              return (resultMap["engines"] as? ResultMap).flatMap { Engine(unsafeResultMap: $0) }
+            }
+            set {
+              resultMap.updateValue(newValue?.resultMap, forKey: "engines")
             }
           }
 
@@ -748,6 +762,45 @@ public final class LaunchQuery: GraphQLQuery {
               }
               set {
                 resultMap.updateValue(newValue, forKey: "meters")
+              }
+            }
+          }
+
+          public struct Engine: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["RocketEngines"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("number", type: .scalar(Int.self)),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(number: Int? = nil) {
+              self.init(unsafeResultMap: ["__typename": "RocketEngines", "number": number])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var number: Int? {
+              get {
+                return resultMap["number"] as? Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "number")
               }
             }
           }

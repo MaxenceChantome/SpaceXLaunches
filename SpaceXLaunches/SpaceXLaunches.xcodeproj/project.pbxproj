@@ -41,6 +41,7 @@
 		D46716702758EC620041DD14 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467166F2758EC620041DD14 /* UIButton.swift */; };
 		D4671673275914800041DD14 /* LaunchDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671672275914800041DD14 /* LaunchDetailsCell.swift */; };
 		D46716752759166E0041DD14 /* RocketDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716742759166E0041DD14 /* RocketDetailsCell.swift */; };
+		D467167727594CDC0041DD14 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467167627594CDC0041DD14 /* SectionHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		D467166F2758EC620041DD14 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		D4671672275914800041DD14 /* LaunchDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchDetailsCell.swift; sourceTree = "<group>"; };
 		D46716742759166E0041DD14 /* RocketDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDetailsCell.swift; sourceTree = "<group>"; };
+		D467167627594CDC0041DD14 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,7 +195,7 @@
 			children = (
 				D4671636275792200041DD14 /* LaunchesListController.swift */,
 				D4671637275792200041DD14 /* LaunchesListViewModel.swift */,
-				D46716502757B1DD0041DD14 /* Cells */,
+				D46716502757B1DD0041DD14 /* View */,
 			);
 			path = LaunchesList;
 			sourceTree = "<group>";
@@ -203,7 +205,7 @@
 			children = (
 				D467163C275792680041DD14 /* LaunchDetailsController.swift */,
 				D467163B275792680041DD14 /* LaunchDetailsViewModel.swift */,
-				D467167127590C760041DD14 /* Cells */,
+				D467167127590C760041DD14 /* Views */,
 			);
 			path = LaunchDetails;
 			sourceTree = "<group>";
@@ -248,12 +250,12 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		D46716502757B1DD0041DD14 /* Cells */ = {
+		D46716502757B1DD0041DD14 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				D46716512757B1F60041DD14 /* LaunchCell.swift */,
 			);
-			path = Cells;
+			path = View;
 			sourceTree = "<group>";
 		};
 		D467166C2758E84E0041DD14 /* UI */ = {
@@ -264,13 +266,14 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		D467167127590C760041DD14 /* Cells */ = {
+		D467167127590C760041DD14 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				D4671672275914800041DD14 /* LaunchDetailsCell.swift */,
 				D46716742759166E0041DD14 /* RocketDetailsCell.swift */,
+				D467167627594CDC0041DD14 /* SectionHeader.swift */,
 			);
-			path = Cells;
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -438,6 +441,7 @@
 				D467166E2758E85F0041DD14 /* EmptyStateView.swift in Sources */,
 				D46716652757ED410041DD14 /* String.swift in Sources */,
 				D467164B275792AD0041DD14 /* UIColor.swift in Sources */,
+				D467167727594CDC0041DD14 /* SectionHeader.swift in Sources */,
 				D467163E275792680041DD14 /* LaunchDetailsController.swift in Sources */,
 				D4671634275791EE0041DD14 /* AppNavigationController.swift in Sources */,
 				D4671639275792200041DD14 /* LaunchesListViewModel.swift in Sources */,

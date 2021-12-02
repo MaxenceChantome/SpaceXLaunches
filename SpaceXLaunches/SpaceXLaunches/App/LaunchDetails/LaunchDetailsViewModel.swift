@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: - Launch cell view model
 enum LaunchDetailsSection: Int, CaseIterable {
@@ -19,6 +20,15 @@ enum LaunchDetailsSection: Int, CaseIterable {
             
         case .rocket:
             return 2
+        }
+    }
+ 
+    var title: String {
+        switch self {
+        case .mission:
+            return "Mission details"
+        case .rocket:
+            return "Rocket details"
         }
     }
 }
@@ -55,19 +65,37 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
         apiService.getLaunchDetails(id: id) { result in
             switch result {
             case .success(let graphQLResult):
-                let launch = [ LaunchDetailsCells.missionDetails(MissionDetailsCellViewData(name: graphQLResult.data?.launch?.missionName ?? "mission", description: graphQLResult.data?.launch?.details ?? "desc"))
-                ]
-                
-                let rocket = [  LaunchDetailsCells.rocketDetails(RocketDetailsCellViewData(detail: graphQLResult.data?.launch?.rocket?.rocketName ?? "Wtf")),
-                                LaunchDetailsCells.rocketDetails(RocketDetailsCellViewData(detail: graphQLResult.data?.launch?.rocket?.rocketType ?? "Wtf type")),
-                ]
-                
-                self.delegate?.reloadData(with: launch, rocket: rocket)
+                if let data = graphQLResult.data?.launch {
+                    let launch = [ LaunchDetailsCells.missionDetails(MissionDetailsCellViewData(name: graphQLResult.data?.launch?.missionName ?? "mission", description: graphQLResult.data?.launch?.details ?? "desc"))
+                    ]
+                    
+                    let rocket = self.getFormattedRocketDetails(rocket: data.rocket)
+                    
+                    self.delegate?.reloadData(with: launch, rocket: rocket)
+                }
                 
             case .failure(let error):
                 print(error)
             }
-            
         }
     }
+    
+    private func getFormattedRocketDetails(rocket: LaunchQuery.Data.Launch.Rocket?) -> [LaunchDetailsCells] {
+        guard let rocket = rocket else { return [LaunchDetailsCells]() }
+        
+        let cellData = [
+            RocketDetailsCellViewData(value: rocket.rocketName ?? "Unkown", detail: "Name"),
+            RocketDetailsCellViewData(value: rocket.rocketType ?? "Unkown", detail: "Type"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.height?.meters ?? 0) meters", detail: "Height"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.mass?.kg ?? 0) kg", detail: "Mass"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.diameter?.meters ?? 0) meters", detail: "Diameter"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.engines?.number ?? 0)", detail: "Engines"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.costPerLaunch ?? 0) $", detail: "Cost per launch"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.successRatePct ?? 0) %", detail: "Success rate")
+        ]
+        
+        return cellData.map { LaunchDetailsCells.rocketDetails($0) }
+        
+    }
 }
+

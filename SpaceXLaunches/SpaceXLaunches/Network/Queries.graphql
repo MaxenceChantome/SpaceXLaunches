@@ -38,8 +38,11 @@ query Launch($id: ID!) {
         diameter {
           meters
         }
-        description
         cost_per_launch
+        success_rate_pct
+        engines {
+          number
+        }
       }
     }
   }

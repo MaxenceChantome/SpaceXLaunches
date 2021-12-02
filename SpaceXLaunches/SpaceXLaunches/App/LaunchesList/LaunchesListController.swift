@@ -19,7 +19,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     private let emptyStateView = EmptyStateView()
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchesListSection, LaunchesListCells>
-    private lazy var dataSource = makeDataSource()
+    private var dataSource: UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells>?
     
     // MARK: protocol compliance
     var onSelectLaunch: ((_ id: String) -> Void)?
@@ -47,6 +47,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
         
         viewModel.loadLaunches()
         viewModel.delegate = self
+        setupDataSource()
         setupTableView()
         setupUI()
     }
@@ -84,7 +85,8 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
 // MARK: - view model delegate
 extension LaunchesListController: LaunchViewModelDelegate {
     func reloadData(with cells: [LaunchesListCells]) {
-        var snapshot = dataSource.snapshot()
+        guard var snapshot = dataSource?.snapshot() else { return }
+//        var snapshot = dataSource?.snapshot()
         
         if snapshot.numberOfSections == 0 {
             snapshot.appendSections(LaunchesListSection.allCases)
@@ -95,8 +97,8 @@ extension LaunchesListController: LaunchViewModelDelegate {
         } else {
             snapshot.appendItems(cells, toSection: .launches)
         }
-        dataSource.defaultRowAnimation = .fade
-        dataSource.apply(snapshot, animatingDifferences: false)
+        dataSource?.defaultRowAnimation = .fade
+        dataSource?.apply(snapshot, animatingDifferences: false)
     }
     
     func showError(error: String) {
@@ -108,13 +110,10 @@ extension LaunchesListController: LaunchViewModelDelegate {
 
 // MARK: - dataSource
 extension LaunchesListController {
-    private func makeDataSource() -> UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells> {
-        return UITableViewDiffableDataSource(
-            tableView: tableView,
-            cellProvider: { [weak self] _, indexPath, launchCell in
-                return self?.dequeueAndConfigure(cellData: launchCell, at: indexPath)
-            }
-        )
+    private func setupDataSource() {
+        dataSource = UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells>(tableView: tableView) { [weak self] _, indexPath, launchCell in
+            return self?.dequeueAndConfigure(cellData: launchCell, at: indexPath)
+        }
     }
     
     private func dequeueAndConfigure(cellData: LaunchesListCells, at indexPath: IndexPath) -> UITableViewCell {
@@ -131,7 +130,8 @@ extension LaunchesListController {
 extension LaunchesListController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // load more launches if it the end of the tableview
-        if dataSource.snapshot().itemIdentifiers(inSection: .launches).count - 1 == indexPath.row {
+        if let rowCount = dataSource?.snapshot().itemIdentifiers(inSection: .launches).count,
+           rowCount - 1 == indexPath.row {
             viewModel.loadLaunches()
         }
     }

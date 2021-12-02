@@ -17,4 +17,8 @@ extension UIColor {
        return  #colorLiteral(red: 0.2117647059, green: 0.8666666667, blue: 0.7764705882, alpha: 1)
     }
     
+    static var dark: UIColor {
+       return  #colorLiteral(red: 0.07450980392, green: 0, blue: 0.1921568627, alpha: 1)
+    }
+    
 }

@@ -17,7 +17,7 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
     private var collectionView: UICollectionView! = nil
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchDetailsSection, LaunchDetailsCells>
-    private lazy var dataSource = makeDataSource()
+    private var dataSource: UICollectionViewDiffableDataSource<LaunchDetailsSection, LaunchDetailsCells>?
     
     init(viewModel: LaunchDetailsViewModelType) {
         self.viewModel = viewModel
@@ -34,8 +34,9 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
         
         viewModel.load()
         viewModel.delegate = self
-    
+        
         setupCollectionView()
+        setupDataSource()
         setupUI()
     }
     
@@ -43,6 +44,8 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .clear
+        
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: SectionHeader.self))
         
         collectionView.registerCellClass(MissionDetailsCell.self)
         collectionView.registerCellClass(RocketDetailsCell.self)
@@ -57,7 +60,7 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [UIColor.primary.cgColor, UIColor.secondary.cgColor]
         view.layer.insertSublayer(gradientLayer, at: 0)
-
+        
         collectionView.bindConstraintsToSuperview()
     }
 }
@@ -70,8 +73,8 @@ extension LaunchDetailsController: LaunchDetailsDelegate {
         snapshot.appendItems(mission, toSection: .mission)
         snapshot.appendItems(rocket, toSection: .rocket)
         
-    
-        dataSource.apply(snapshot)
+        
+        dataSource?.apply(snapshot)
     }
     
     func showError(error: String) {
@@ -83,13 +86,21 @@ extension LaunchDetailsController: LaunchDetailsDelegate {
 
 // MARK: - dataSource
 extension LaunchDetailsController {
-    private func makeDataSource() -> UICollectionViewDiffableDataSource<LaunchDetailsSection, LaunchDetailsCells> {
-        return UICollectionViewDiffableDataSource(
-            collectionView: collectionView,
-            cellProvider: { [weak self] _, indexPath, launchCell in
-                return self?.dequeueAndConfigure(cellData: launchCell, at: indexPath)
+    private func setupDataSource() {
+        dataSource = UICollectionViewDiffableDataSource<LaunchDetailsSection, LaunchDetailsCells>(collectionView: collectionView) { [weak self] _, indexPath, launchCell in
+            return self?.dequeueAndConfigure(cellData: launchCell, at: indexPath)
+        }
+        
+        dataSource?.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+            guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: SectionHeader.self), for: indexPath) as? SectionHeader else {
+                return nil
             }
-        )
+            
+            guard let firstApp = self?.dataSource?.itemIdentifier(for: indexPath) else { return nil }
+            guard let section = self?.dataSource?.snapshot().sectionIdentifier(containingItem: firstApp) else { return nil }
+            sectionHeader.configure(with: "count : \(section.columnCount)")
+            return sectionHeader
+        }
     }
     
     private func dequeueAndConfigure(cellData: LaunchDetailsCells, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -108,29 +119,35 @@ extension LaunchDetailsController {
 
 // MARK: - layout
 extension LaunchDetailsController {
-    func createLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
-            layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-
+                                                            layoutEnvironment: NSCollectionLayoutEnvironment) ->NSCollectionLayoutSection? in
             guard let sections = LaunchDetailsSection(rawValue: sectionIndex) else { return nil }
-            let columns = sections.columnCount
-
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                 heightDimension: .fractionalHeight(1.0))
+            
+            let groupHeight: NSCollectionLayoutDimension = sections.columnCount == 1 ? .estimated(500) : .fractionalWidth(0.4)
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 8, bottom: 2, trailing: 8)
-            let groupHeight = columns == 1 ?
-            NSCollectionLayoutDimension.estimated(500) :
-                NSCollectionLayoutDimension.fractionalWidth(0.2)
-
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                  heightDimension: groupHeight)
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
-
+            if sections.columnCount != 1 {
+                item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+            }
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: sections.columnCount)
+            
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16)
+            
+            let layoutSectionHeader = self.createSectionHeader()
+            section.boundarySupplementaryItems = [layoutSectionHeader]
             return section
         }
         return layout
+    }
+    
+    private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
+        let layoutSectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(80))
+        let layoutSectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: layoutSectionHeaderSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        return layoutSectionHeader
     }
 }
