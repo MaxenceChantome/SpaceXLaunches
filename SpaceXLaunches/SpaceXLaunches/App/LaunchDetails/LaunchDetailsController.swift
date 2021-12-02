@@ -17,7 +17,9 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
     private var collectionView: UICollectionView! = nil
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchDetailsSection, LaunchDetailsCells>
-    private var dataSource: UICollectionViewDiffableDataSource<LaunchDetailsSection, LaunchDetailsCells>?
+    private typealias Datasource = UICollectionViewDiffableDataSource<LaunchDetailsSection, LaunchDetailsCells>
+    
+    private var dataSource: Datasource?
     
     init(viewModel: LaunchDetailsViewModelType) {
         self.viewModel = viewModel
@@ -45,7 +47,7 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.backgroundColor = .clear
         
-        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: SectionHeader.self))
+        collectionView.registerSupplementaryViewClasss(SectionHeader.self, kind: UICollectionView.elementKindSectionHeader)
         
         collectionView.registerCellClass(MissionDetailsCell.self)
         collectionView.registerCellClass(RocketDetailsCell.self)
@@ -80,25 +82,22 @@ extension LaunchDetailsController: LaunchDetailsDelegate {
     func showError(error: String) {
         //todo
     }
-    
-    
 }
 
 // MARK: - dataSource
 extension LaunchDetailsController {
     private func setupDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<LaunchDetailsSection, LaunchDetailsCells>(collectionView: collectionView) { [weak self] _, indexPath, launchCell in
+        dataSource = Datasource(collectionView: collectionView) { [weak self] _, indexPath, launchCell in
             return self?.dequeueAndConfigure(cellData: launchCell, at: indexPath)
         }
         
         dataSource?.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
-            guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: SectionHeader.self), for: indexPath) as? SectionHeader else {
-                return nil
-            }
+            guard let item = self?.dataSource?.itemIdentifier(for: indexPath),
+            let section = self?.dataSource?.snapshot().sectionIdentifier(containingItem: item) else { return nil }
             
-            guard let firstApp = self?.dataSource?.itemIdentifier(for: indexPath) else { return nil }
-            guard let section = self?.dataSource?.snapshot().sectionIdentifier(containingItem: firstApp) else { return nil }
-            sectionHeader.configure(with: "count : \(section.columnCount)")
+            let sectionHeader = collectionView.dequeueReusableSupplementaryView(withClass: SectionHeader.self, indexPath: indexPath, kind: kind)
+            
+            sectionHeader.configure(with: section.title)
             return sectionHeader
         }
     }

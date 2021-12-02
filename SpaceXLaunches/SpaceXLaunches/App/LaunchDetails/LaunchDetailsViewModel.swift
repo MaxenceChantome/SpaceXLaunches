@@ -66,18 +66,27 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
             switch result {
             case .success(let graphQLResult):
                 if let data = graphQLResult.data?.launch {
-                    let launch = [ LaunchDetailsCells.missionDetails(MissionDetailsCellViewData(name: graphQLResult.data?.launch?.missionName ?? "mission", description: graphQLResult.data?.launch?.details ?? "desc"))
-                    ]
-                    
+                    let mission = self.getFormattedMissionDetails(mission: data)
                     let rocket = self.getFormattedRocketDetails(rocket: data.rocket)
-                    
-                    self.delegate?.reloadData(with: launch, rocket: rocket)
+                    self.delegate?.reloadData(with: mission, rocket: rocket)
                 }
                 
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    private func getFormattedMissionDetails(mission: LaunchQuery.Data.Launch?) -> [LaunchDetailsCells] {
+        guard let mission = mission else { return [LaunchDetailsCells]() }
+        
+        let date = mission.launchDateUtc?.iso8601Date()
+        let cellData = MissionDetailsCellViewData(name: mission.missionName ?? "Unknown mission",
+                                                  description: mission.details ?? "No details found for this mission",
+                                                  site: mission.launchSite?.siteNameLong ?? "No site found for this mission",
+                                                  date: date?.string(withFormat: .dayAndYear) ?? "Date not found for this mission")
+        
+        return [LaunchDetailsCells.missionDetails(cellData)]
     }
     
     private func getFormattedRocketDetails(rocket: LaunchQuery.Data.Launch.Rocket?) -> [LaunchDetailsCells] {

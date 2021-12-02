@@ -25,4 +25,13 @@ extension UICollectionView {
     func registerCellClass<T: UICollectionViewCell>(_ className: T.Type) {
         register(className, forCellWithReuseIdentifier: String(describing: className))
     }
+    
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(withClass name: T.Type, indexPath: IndexPath, kind: String) -> T {
+        return dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: name), for: indexPath) as! T
+    }
+    
+    func registerSupplementaryViewClasss<T: UICollectionReusableView>(_ className: T.Type, kind: String) {
+        register(T.self, forSupplementaryViewOfKind: kind, withReuseIdentifier: String(describing: className))
+    }
+    
 }

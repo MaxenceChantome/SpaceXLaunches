@@ -19,7 +19,9 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     private let emptyStateView = EmptyStateView()
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchesListSection, LaunchesListCells>
-    private var dataSource: UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells>?
+    private typealias Datasource = UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells>
+    
+    private var dataSource: Datasource?
     
     // MARK: protocol compliance
     var onSelectLaunch: ((_ id: String) -> Void)?
@@ -111,7 +113,7 @@ extension LaunchesListController: LaunchViewModelDelegate {
 // MARK: - dataSource
 extension LaunchesListController {
     private func setupDataSource() {
-        dataSource = UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells>(tableView: tableView) { [weak self] _, indexPath, launchCell in
+        dataSource = Datasource(tableView: tableView) { [weak self] _, indexPath, launchCell in
             return self?.dequeueAndConfigure(cellData: launchCell, at: indexPath)
         }
     }
