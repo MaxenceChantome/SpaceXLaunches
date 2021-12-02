@@ -12,3 +12,35 @@ query LaunchList($limit: Int, $offset: Int) {
     }
   }
 }
+
+query Launch($id: ID!) {
+  launch(id: $id) {
+    details
+    launch_site {
+      site_name_long
+    }
+    launch_date_utc
+    mission_name
+    links {
+      flickr_images
+      mission_patch
+    }
+    rocket {
+      rocket_name
+      rocket_type
+      rocket {
+        height {
+          meters
+        }
+        mass {
+          kg
+        }
+        diameter {
+          meters
+        }
+        description
+        cost_per_launch
+      }
+    }
+  }
+}

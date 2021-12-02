@@ -25,11 +25,17 @@ class AppCoordinator: Coordinator {
         let viewModel = LaunchesListViewModel(apiService: apiService)
         let controller = LaunchesListController(viewModel: viewModel)
         
+        
+        controller.onSelectLaunch = { [weak self] id in
+            guard let self = self else { return }
+            self.showLaunchDetail(id: id)
+        }
+        
         router.push(controller, animated: false)
     }
     
     private func showLaunchDetail(id: String) {
-        let viewModel = LaunchDetailsViewModel()
+        let viewModel = LaunchDetailsViewModel(apiService: apiService, id: id)
         let controller = LaunchDetailsController(viewModel: viewModel)
         
         router.push(controller, animated: true)

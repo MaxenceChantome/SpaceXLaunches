@@ -18,7 +18,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     private let tableView = UITableView()
     private let emptyStateView = EmptyStateView()
     
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchesListSection, LaunchesListCell>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchesListSection, LaunchesListCells>
     private lazy var dataSource = makeDataSource()
     
     // MARK: protocol compliance
@@ -83,7 +83,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
 
 // MARK: - view model delegate
 extension LaunchesListController: LaunchViewModelDelegate {
-    func reloadData(with cells: [LaunchesListCell]) {
+    func reloadData(with cells: [LaunchesListCells]) {
         var snapshot = dataSource.snapshot()
         
         if snapshot.numberOfSections == 0 {
@@ -108,7 +108,7 @@ extension LaunchesListController: LaunchViewModelDelegate {
 
 // MARK: - dataSource
 extension LaunchesListController {
-    private func makeDataSource() -> UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCell> {
+    private func makeDataSource() -> UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells> {
         return UITableViewDiffableDataSource(
             tableView: tableView,
             cellProvider: { [weak self] _, indexPath, launchCell in
@@ -117,7 +117,7 @@ extension LaunchesListController {
         )
     }
     
-    private func dequeueAndConfigure(cellData: LaunchesListCell, at indexPath: IndexPath) -> UITableViewCell {
+    private func dequeueAndConfigure(cellData: LaunchesListCells, at indexPath: IndexPath) -> UITableViewCell {
         switch cellData {
         case .launch(let launchCellViewData):
             let cell = tableView.dequeueReusableCell(withClass: LaunchCell.self)

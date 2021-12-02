@@ -12,13 +12,13 @@ enum LaunchesListSection: CaseIterable {
     case launches
 }
 
-enum LaunchesListCell: Hashable {
+enum LaunchesListCells: Hashable {
     case launch(LaunchCellViewData)
 }
 
 // MARK: Launches view model
 protocol LaunchViewModelDelegate: AnyObject {
-    func reloadData(with cells: [LaunchesListCell])
+    func reloadData(with cells: [LaunchesListCells])
     func showError(error: String)
 }
 
@@ -70,7 +70,7 @@ class LaunchesListViewModel: LaunchesListViewModelType {
     var count = 0
     
     private func handleLaunches(launches: [LaunchListQuery.Data.LaunchesPast?]) {
-        var cells = [LaunchesListCell]()
+        var cells = [LaunchesListCells]()
         count += 1
         
         for launch in launches {
@@ -84,7 +84,7 @@ class LaunchesListViewModel: LaunchesListViewModelType {
                 patchImage: url != nil ? URL(string: url!) : nil
             )
             
-            cells.append(LaunchesListCell.launch(viewData))
+            cells.append(LaunchesListCells.launch(viewData))
         }
         delegate?.reloadData(with: cells)
     }

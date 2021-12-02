@@ -8,9 +8,10 @@
 import Foundation
 import Apollo
 
-// I prefer using a Networking class instead of directly the apollo client to be more flexible
 protocol ApiServiceType {
     func getLaunches(offset: Int?, completion: @escaping (Result<GraphQLResult<LaunchListQuery.Data>, Error>) -> Void)
+    
+    func getLaunchDetails(id: String, completion: @escaping (Result<GraphQLResult<LaunchQuery.Data>, Error>) -> Void)
 }
 
 class ApiService: ApiServiceType {
@@ -19,6 +20,13 @@ class ApiService: ApiServiceType {
     func getLaunches(offset: Int?, completion: @escaping (Result<GraphQLResult<LaunchListQuery.Data>, Error>) -> Void) {
         
         apollo.fetch(query: LaunchListQuery(limit: 20, offset: offset ?? 0)) { result in
+            completion(result)
+        }
+    }
+    
+    func getLaunchDetails(id: String, completion: @escaping (Result<GraphQLResult<LaunchQuery.Data>, Error>) -> Void) {
+        
+        apollo.fetch(query: LaunchQuery(id:id)) { result in
             completion(result)
         }
     }

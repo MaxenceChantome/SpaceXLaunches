@@ -7,14 +7,7 @@
 
 import UIKit
 
-protocol LaunchCellViewDataProvider {
-    var missionName: String { get }
-    var rocketInfos: String { get }
-    var date: String { get }
-    var patchImage: URL? { get }
-}
-
-struct LaunchCellViewData: LaunchCellViewDataProvider, Hashable {
+struct LaunchCellViewData: Hashable {
     let missionName: String
     let rocketInfos: String
     let date: String
@@ -26,7 +19,6 @@ struct LaunchCellViewData: LaunchCellViewDataProvider, Hashable {
         self.date = date
         self.patchImage = patchImage
     }
-    
 }
 
 class LaunchCell: UITableViewCell {
@@ -86,7 +78,7 @@ class LaunchCell: UITableViewCell {
         patchImageView.cancelImageLoad()
     }
     
-    func configure(with data: LaunchCellViewDataProvider) {
+    func configure(with data: LaunchCellViewData) {
         missionNameLabel.text = data.missionName
         rocketInfosLabel.text = data.rocketInfos
         dateLabel.text = data.date

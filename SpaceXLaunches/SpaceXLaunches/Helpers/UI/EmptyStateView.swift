@@ -17,7 +17,7 @@ class EmptyStateView: UIView, EmptyStateViewType {
     
     private let titleLabel = UILabel(title: nil, font: .title, color: .white, lines: 0, alignment: .center)
     
-    private let retryButton = UIButton(title: "Réessayer", font: .subtitle, textColor: .white, backgroundColor: .primary)
+    private let retryButton = UIButton(title: "Retry", font: .subtitle, textColor: .white, backgroundColor: .primary)
     
     init() {
         super.init(frame: .zero)

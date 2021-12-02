@@ -32,7 +32,6 @@ extension UIView {
         NSLayoutConstraint.activate(constraints)
     }
     
-    
     func bindConstraintsToSuperview(_ inset: UIEdgeInsets? = nil) {
         guard let superview = superview else {
             fatalError("Superview not found, try superview.addSubview(view) first")

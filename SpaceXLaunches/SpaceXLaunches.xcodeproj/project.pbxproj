@@ -24,7 +24,7 @@
 		D46716472757929D0041DD14 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716442757929D0041DD14 /* DeepLink.swift */; };
 		D46716482757929D0041DD14 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716452757929D0041DD14 /* Router.swift */; };
 		D467164B275792AD0041DD14 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164A275792AD0041DD14 /* UIColor.swift */; };
-		D467164D2757B19A0041DD14 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164C2757B19A0041DD14 /* UITableView.swift */; };
+		D467164D2757B19A0041DD14 /* UITableView+UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164C2757B19A0041DD14 /* UITableView+UICollectionView.swift */; };
 		D467164F2757B1BB0041DD14 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467164E2757B1BB0041DD14 /* UIView.swift */; };
 		D46716522757B1F60041DD14 /* LaunchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716512757B1F60041DD14 /* LaunchCell.swift */; };
 		D46716542757B2410041DD14 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716532757B2410041DD14 /* UILabel.swift */; };
@@ -39,6 +39,8 @@
 		D46716692757F3400041DD14 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716682757F3400041DD14 /* ImageLoader.swift */; };
 		D467166E2758E85F0041DD14 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467166D2758E85F0041DD14 /* EmptyStateView.swift */; };
 		D46716702758EC620041DD14 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467166F2758EC620041DD14 /* UIButton.swift */; };
+		D4671673275914800041DD14 /* LaunchDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671672275914800041DD14 /* LaunchDetailsCell.swift */; };
+		D46716752759166E0041DD14 /* RocketDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716742759166E0041DD14 /* RocketDetailsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,7 +82,7 @@
 		D46716442757929D0041DD14 /* DeepLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		D46716452757929D0041DD14 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		D467164A275792AD0041DD14 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		D467164C2757B19A0041DD14 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
+		D467164C2757B19A0041DD14 /* UITableView+UICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+UICollectionView.swift"; sourceTree = "<group>"; };
 		D467164E2757B1BB0041DD14 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		D46716512757B1F60041DD14 /* LaunchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchCell.swift; sourceTree = "<group>"; };
 		D46716532757B2410041DD14 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
@@ -94,6 +96,8 @@
 		D46716682757F3400041DD14 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		D467166D2758E85F0041DD14 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		D467166F2758EC620041DD14 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		D4671672275914800041DD14 /* LaunchDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchDetailsCell.swift; sourceTree = "<group>"; };
+		D46716742759166E0041DD14 /* RocketDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDetailsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,9 +191,9 @@
 		D4671635275792090041DD14 /* LaunchesList */ = {
 			isa = PBXGroup;
 			children = (
-				D46716502757B1DD0041DD14 /* Cells */,
 				D4671636275792200041DD14 /* LaunchesListController.swift */,
 				D4671637275792200041DD14 /* LaunchesListViewModel.swift */,
+				D46716502757B1DD0041DD14 /* Cells */,
 			);
 			path = LaunchesList;
 			sourceTree = "<group>";
@@ -199,6 +203,7 @@
 			children = (
 				D467163C275792680041DD14 /* LaunchDetailsController.swift */,
 				D467163B275792680041DD14 /* LaunchDetailsViewModel.swift */,
+				D467167127590C760041DD14 /* Cells */,
 			);
 			path = LaunchDetails;
 			sourceTree = "<group>";
@@ -231,7 +236,7 @@
 			isa = PBXGroup;
 			children = (
 				D467164A275792AD0041DD14 /* UIColor.swift */,
-				D467164C2757B19A0041DD14 /* UITableView.swift */,
+				D467164C2757B19A0041DD14 /* UITableView+UICollectionView.swift */,
 				D467164E2757B1BB0041DD14 /* UIView.swift */,
 				D46716532757B2410041DD14 /* UILabel.swift */,
 				D46716552757B2920041DD14 /* UIFont.swift */,
@@ -257,6 +262,15 @@
 				D467166D2758E85F0041DD14 /* EmptyStateView.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		D467167127590C760041DD14 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D4671672275914800041DD14 /* LaunchDetailsCell.swift */,
+				D46716742759166E0041DD14 /* RocketDetailsCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -431,14 +445,16 @@
 				D46716542757B2410041DD14 /* UILabel.swift in Sources */,
 				D4671638275792200041DD14 /* LaunchesListController.swift in Sources */,
 				D46716702758EC620041DD14 /* UIButton.swift in Sources */,
+				D46716752759166E0041DD14 /* RocketDetailsCell.swift in Sources */,
 				D4671641275792860041DD14 /* ApiService.swift in Sources */,
 				D46716522757B1F60041DD14 /* LaunchCell.swift in Sources */,
 				D467163D275792680041DD14 /* LaunchDetailsViewModel.swift in Sources */,
 				D46716472757929D0041DD14 /* DeepLink.swift in Sources */,
 				D467164F2757B1BB0041DD14 /* UIView.swift in Sources */,
-				D467164D2757B19A0041DD14 /* UITableView.swift in Sources */,
+				D467164D2757B19A0041DD14 /* UITableView+UICollectionView.swift in Sources */,
 				D46716692757F3400041DD14 /* ImageLoader.swift in Sources */,
 				D46716672757F2910041DD14 /* UIImageView.swift in Sources */,
+				D4671673275914800041DD14 /* LaunchDetailsCell.swift in Sources */,
 				D467160127578B410041DD14 /* AppDelegate.swift in Sources */,
 				D46716632757EC700041DD14 /* Date.swift in Sources */,
 				D46716612757D36B0041DD14 /* API.swift in Sources */,
