@@ -9,16 +9,22 @@ import Foundation
 import UIKit
 
 protocol LaunchesListControllerType {
-    
+    var onSelectLaunch: ((_ id: String) -> Void)? { get set }
 }
 
 class LaunchesListController: UIViewController, LaunchesListControllerType {
+    // MARK: - private attributes
     private var viewModel: LaunchesListViewModelType
     private let tableView = UITableView()
+    private let emptyStateView = EmptyStateView()
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchesListSection, LaunchesListCell>
     private lazy var dataSource = makeDataSource()
     
+    // MARK: protocol compliance
+    var onSelectLaunch: ((_ id: String) -> Void)?
+    
+    // MARK: - life cycle
     init(viewModel: LaunchesListViewModelType) {
         self.viewModel = viewModel
         
@@ -32,11 +38,17 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        emptyStateView.onRetry = { [weak self] in
+            guard let self = self else { return }
+            self.tableView.isHidden = false
+            self.emptyStateView.isHidden = true
+            self.viewModel.loadLaunches()
+        }
+        
         viewModel.loadLaunches()
         viewModel.delegate = self
         setupTableView()
         setupUI()
-        title = "SpaceX launches"
     }
     
     private func setupTableView() {
@@ -49,7 +61,9 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     }
     
     private func setupUI() {
-        view.addSubviews([tableView])
+        title = "SpaceX launches"
+        view.addSubviews([tableView, emptyStateView])
+        emptyStateView.isHidden = true
         
         // set gradient
         let gradientLayer = CAGradientLayer()
@@ -63,9 +77,11 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+        emptyStateView.bindConstraintsToSuperview()
     }
 }
 
+// MARK: - view model delegate
 extension LaunchesListController: LaunchViewModelDelegate {
     func reloadData(with cells: [LaunchesListCell]) {
         var snapshot = dataSource.snapshot()
@@ -84,12 +100,13 @@ extension LaunchesListController: LaunchViewModelDelegate {
     }
     
     func showError(error: String) {
-        //todo
+        tableView.isHidden = true
+        emptyStateView.isHidden = false
+        emptyStateView.setTitle(error)
     }
 }
 
-// MARK: - DataSource
-
+// MARK: - dataSource
 extension LaunchesListController {
     private func makeDataSource() -> UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCell> {
         return UITableViewDiffableDataSource(
@@ -110,11 +127,18 @@ extension LaunchesListController {
     }
 }
 
+// MARK: - tableview delegate
 extension LaunchesListController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // load more launches if it the end of the tableview
         if dataSource.snapshot().itemIdentifiers(inSection: .launches).count - 1 == indexPath.row {
             viewModel.loadLaunches()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let id = viewModel.getLaunchId(at: indexPath.row) {
+            onSelectLaunch?(id)
         }
     }
 }

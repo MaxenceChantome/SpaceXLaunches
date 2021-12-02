@@ -24,12 +24,14 @@ protocol LaunchViewModelDelegate: AnyObject {
 
 protocol LaunchesListViewModelType {
     func loadLaunches()
+    func getLaunchId(at row: Int) -> String?
     var delegate: LaunchViewModelDelegate? { get set }
 }
 
 class LaunchesListViewModel: LaunchesListViewModelType {
     weak var delegate: LaunchViewModelDelegate?
     private let apiService: ApiServiceType
+    private var launches = [LaunchListQuery.Data.LaunchesPast?]()
     // Used for pagination
     private var launchesOffset = 0
     private var isLoading = false
@@ -48,16 +50,28 @@ class LaunchesListViewModel: LaunchesListViewModelType {
             case .success(let graphQLResult):
                 if let launches = graphQLResult.data?.launchesPast {
                     self.launchesOffset += launches.count
+                    self.launches.append(contentsOf: launches)
                     self.handleLaunches(launches: launches)
+                } else if let errors = graphQLResult.errors {
+                    let errorMessage = errors.map { $0.localizedDescription }.joined()
+                    self.delegate?.showError(error: errorMessage)
                 }
             case .failure(let error):
-                print("error = \(error)")
+                self.delegate?.showError(error: error.localizedDescription)
             }
         }
     }
     
+    func getLaunchId(at row: Int) -> String? {
+        guard row < launches.count else { return nil }
+        return launches[row]?.id
+    }
+    
+    var count = 0
+    
     private func handleLaunches(launches: [LaunchListQuery.Data.LaunchesPast?]) {
         var cells = [LaunchesListCell]()
+        count += 1
         
         for launch in launches {
             let date = launch?.launchDateUtc?.iso8601Date()
@@ -72,6 +86,6 @@ class LaunchesListViewModel: LaunchesListViewModelType {
             
             cells.append(LaunchesListCell.launch(viewData))
         }
-        self.delegate?.reloadData(with: cells)
+        delegate?.reloadData(with: cells)
     }
 }

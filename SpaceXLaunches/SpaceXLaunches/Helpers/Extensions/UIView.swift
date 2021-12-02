@@ -13,6 +13,14 @@ extension UIView {
         self.backgroundColor = backgroundColor
     }
     
+    var cornerRadius: CGFloat? {
+        get { return layer.cornerRadius }
+        set {
+            layer.cornerRadius = newValue ?? 0
+            layer.masksToBounds = (newValue ?? CGFloat(0.0)) > CGFloat(0.0)
+        }
+    }
+    
     func addSubviews(_ views: [UIView]) {
         for i in 0..<views.count {
             addSubview(views[i])
