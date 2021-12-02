@@ -9,7 +9,7 @@ public final class LaunchListQuery: GraphQLQuery {
   public let operationDefinition: String =
     """
     query LaunchList($limit: Int, $offset: Int) {
-      launches(limit: $limit, offset: $offset) {
+      launchesPast(limit: $limit, offset: $offset) {
         __typename
         id
         launch_date_utc
@@ -46,7 +46,7 @@ public final class LaunchListQuery: GraphQLQuery {
 
     public static var selections: [GraphQLSelection] {
       return [
-        GraphQLField("launches", arguments: ["limit": GraphQLVariable("limit"), "offset": GraphQLVariable("offset")], type: .list(.object(Launch.selections))),
+        GraphQLField("launchesPast", arguments: ["limit": GraphQLVariable("limit"), "offset": GraphQLVariable("offset")], type: .list(.object(LaunchesPast.selections))),
       ]
     }
 
@@ -56,20 +56,20 @@ public final class LaunchListQuery: GraphQLQuery {
       self.resultMap = unsafeResultMap
     }
 
-    public init(launches: [Launch?]? = nil) {
-      self.init(unsafeResultMap: ["__typename": "Query", "launches": launches.flatMap { (value: [Launch?]) -> [ResultMap?] in value.map { (value: Launch?) -> ResultMap? in value.flatMap { (value: Launch) -> ResultMap in value.resultMap } } }])
+    public init(launchesPast: [LaunchesPast?]? = nil) {
+      self.init(unsafeResultMap: ["__typename": "Query", "launchesPast": launchesPast.flatMap { (value: [LaunchesPast?]) -> [ResultMap?] in value.map { (value: LaunchesPast?) -> ResultMap? in value.flatMap { (value: LaunchesPast) -> ResultMap in value.resultMap } } }])
     }
 
-    public var launches: [Launch?]? {
+    public var launchesPast: [LaunchesPast?]? {
       get {
-        return (resultMap["launches"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [Launch?] in value.map { (value: ResultMap?) -> Launch? in value.flatMap { (value: ResultMap) -> Launch in Launch(unsafeResultMap: value) } } }
+        return (resultMap["launchesPast"] as? [ResultMap?]).flatMap { (value: [ResultMap?]) -> [LaunchesPast?] in value.map { (value: ResultMap?) -> LaunchesPast? in value.flatMap { (value: ResultMap) -> LaunchesPast in LaunchesPast(unsafeResultMap: value) } } }
       }
       set {
-        resultMap.updateValue(newValue.flatMap { (value: [Launch?]) -> [ResultMap?] in value.map { (value: Launch?) -> ResultMap? in value.flatMap { (value: Launch) -> ResultMap in value.resultMap } } }, forKey: "launches")
+        resultMap.updateValue(newValue.flatMap { (value: [LaunchesPast?]) -> [ResultMap?] in value.map { (value: LaunchesPast?) -> ResultMap? in value.flatMap { (value: LaunchesPast) -> ResultMap in value.resultMap } } }, forKey: "launchesPast")
       }
     }
 
-    public struct Launch: GraphQLSelectionSet {
+    public struct LaunchesPast: GraphQLSelectionSet {
       public static let possibleTypes: [String] = ["Launch"]
 
       public static var selections: [GraphQLSelection] {

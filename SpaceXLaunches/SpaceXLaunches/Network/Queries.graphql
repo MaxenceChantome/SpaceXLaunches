@@ -1,5 +1,5 @@
 query LaunchList($limit: Int, $offset: Int) {
-  launches(limit: $limit, offset: $offset) {
+  launchesPast(limit: $limit, offset: $offset) {
     id
     launch_date_utc
     mission_name

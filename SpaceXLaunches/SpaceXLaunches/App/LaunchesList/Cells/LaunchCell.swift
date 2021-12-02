@@ -80,6 +80,12 @@ class LaunchCell: UITableViewCell {
         
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        patchImageView.image = nil
+        patchImageView.cancelImageLoad()
+    }
+    
     func configure(with data: LaunchCellViewDataProvider) {
         missionNameLabel.text = data.missionName
         rocketInfosLabel.text = data.rocketInfos

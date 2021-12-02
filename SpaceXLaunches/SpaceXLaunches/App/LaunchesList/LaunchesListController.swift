@@ -41,9 +41,13 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     
     private func setupTableView() {
         tableView.backgroundColor = .clear
+        tableView.separatorColor = .white
+        
+        tableView.delegate = self
+        
         tableView.registerCellClass(LaunchCell.self)
     }
-
+    
     private func setupUI() {
         view.addSubviews([tableView])
         
@@ -52,7 +56,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [UIColor.primary.cgColor, UIColor.secondary.cgColor]
         view.layer.insertSublayer(gradientLayer, at: 0)
-
+        
         tableView.bindConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -64,21 +68,29 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
 
 extension LaunchesListController: LaunchViewModelDelegate {
     func reloadData(with cells: [LaunchesListCell]) {
-        var snapshot = Snapshot()
-        snapshot.appendSections(LaunchesListSection.allCases)
-        snapshot.appendItems(cells, toSection: .launches)
-
+        var snapshot = dataSource.snapshot()
+        
+        if snapshot.numberOfSections == 0 {
+            snapshot.appendSections(LaunchesListSection.allCases)
+        }
+        
+        if let lastLaunchShowed = snapshot.itemIdentifiers(inSection: .launches).last {
+            snapshot.insertItems(cells, afterItem: lastLaunchShowed)
+        } else {
+            snapshot.appendItems(cells, toSection: .launches)
+        }
         dataSource.defaultRowAnimation = .fade
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
-    
+    func showError(error: String) {
+        //todo
+    }
 }
 
 // MARK: - DataSource
 
 extension LaunchesListController {
-
     private func makeDataSource() -> UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCell> {
         return UITableViewDiffableDataSource(
             tableView: tableView,
@@ -87,13 +99,22 @@ extension LaunchesListController {
             }
         )
     }
-
+    
     private func dequeueAndConfigure(cellData: LaunchesListCell, at indexPath: IndexPath) -> UITableViewCell {
         switch cellData {
         case .launch(let launchCellViewData):
             let cell = tableView.dequeueReusableCell(withClass: LaunchCell.self)
             cell.configure(with: launchCellViewData)
             return cell
+        }
+    }
+}
+
+extension LaunchesListController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        // load more launches if it the end of the tableview
+        if dataSource.snapshot().itemIdentifiers(inSection: .launches).count - 1 == indexPath.row {
+            viewModel.loadLaunches()
         }
     }
 }
