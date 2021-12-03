@@ -10,7 +10,7 @@ In order to test the deeplink system, you can type this command (you'll need to 
 `xcrun simctl openurl booted com.spacexlaunches://rocket?id=MY_ID`
 
 ### Time spent
-I spend almost 20 hours doing the test.
+I spend almost 15 hours doing the test.
 
 ### Assumptions made
 In the test statement, it is asked to show an image if there is one: as I had already downloaded the patch images from the list, I decided to download the images from FLicker if they were available.
