@@ -16,7 +16,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     // MARK: - private attributes
     private var viewModel: LaunchesListViewModelType
     private let tableView = UITableView()
-    private let emptyStateView = EmptyStateView()
+    private let errorView = ErrorView()
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchesListSection, LaunchesListCells>
     private typealias Datasource = UITableViewDiffableDataSource<LaunchesListSection, LaunchesListCells>
@@ -46,10 +46,10 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emptyStateView.onRetry = { [weak self] in
+        errorView.onRetry = { [weak self] in
             guard let self = self else { return }
             self.tableView.isHidden = false
-            self.emptyStateView.isHidden = true
+            self.errorView.isHidden = true
             self.viewModel.loadLaunches()
         }
         
@@ -63,7 +63,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     private func setupTableView() {
         tableView.backgroundColor = .clear
         tableView.separatorColor = .white
-        
+        tableView.separatorStyle = .none
         tableView.delegate = self
         
         tableView.registerCellClass(LaunchCell.self)
@@ -71,14 +71,15 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
     
     private func setupUI() {
         title = "SpaceX launches"
-        view.addSubviews([tableView, emptyStateView])
-        emptyStateView.isHidden = true
+        view.addSubviews([tableView, errorView])
+        errorView.isHidden = true
         
         // set gradient
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
-        gradientLayer.colors = [UIColor.primary.cgColor, UIColor.secondary.cgColor]
+        gradientLayer.colors = UIColor.gradient.map { $0.cgColor }
         view.layer.insertSublayer(gradientLayer, at: 0)
+        
         
         tableView.bindConstraints([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -86,7 +87,7 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-        emptyStateView.bindConstraintsToSuperview()
+        errorView.bindConstraintsToSuperview()
     }
 }
 
@@ -94,7 +95,6 @@ class LaunchesListController: UIViewController, LaunchesListControllerType {
 extension LaunchesListController: LaunchViewModelDelegate {
     func reloadData(with cells: [LaunchesListCells]) {
         guard var snapshot = dataSource?.snapshot() else { return }
-//        var snapshot = dataSource?.snapshot()
         
         if snapshot.numberOfSections == 0 {
             snapshot.appendSections(LaunchesListSection.allCases)
@@ -111,8 +111,8 @@ extension LaunchesListController: LaunchViewModelDelegate {
     
     func showError(error: String) {
         tableView.isHidden = true
-        emptyStateView.isHidden = false
-        emptyStateView.setTitle(error)
+        errorView.isHidden = false
+        errorView.setTitle(error)
     }
 }
 
@@ -137,7 +137,7 @@ extension LaunchesListController {
 // MARK: - tableview delegate
 extension LaunchesListController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // load more launches if it the end of the tableview
+        // Paginatiom: load more data if it's the end of the tableview
         if let rowCount = dataSource?.snapshot().itemIdentifiers(inSection: .launches).count,
            rowCount - 1 == indexPath.row {
             viewModel.loadLaunches()

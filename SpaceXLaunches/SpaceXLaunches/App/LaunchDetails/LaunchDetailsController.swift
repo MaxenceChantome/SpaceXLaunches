@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 
 protocol LaunchDetailsControllerType {
-    
 }
 
 class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
     private var viewModel: LaunchDetailsViewModelType
     private var collectionView: UICollectionView! = nil
+    private lazy var errorView = ErrorView()
     
     private typealias Snapshot = NSDiffableDataSourceSnapshot<LaunchDetailsSection, LaunchDetailsCells>
     private typealias Datasource = UICollectionViewDiffableDataSource<LaunchDetailsSection, LaunchDetailsCells>
@@ -43,6 +43,13 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
         viewModel.load()
         viewModel.delegate = self
         
+        errorView.onRetry = { [weak self] in
+            guard let self = self else { return }
+            self.collectionView.isHidden = false
+            self.errorView.isHidden = true
+            self.viewModel.load()
+        }
+        
         setupCollectionView()
         setupDataSource()
         setupUI()
@@ -62,15 +69,17 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
     
     private func setupUI() {
         title = "Launch details"
-        view.addSubviews([collectionView])
+        view.addSubviews([collectionView, errorView])
+        errorView.isHidden = true
         
         // set gradient
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
-        gradientLayer.colors = [UIColor.primary.cgColor, UIColor.secondary.cgColor]
+        gradientLayer.colors = UIColor.gradient.map { $0.cgColor }
         view.layer.insertSublayer(gradientLayer, at: 0)
         
         collectionView.bindConstraintsToSuperview()
+        errorView.bindConstraintsToSuperview()
     }
 }
 
@@ -86,12 +95,13 @@ extension LaunchDetailsController: LaunchDetailsDelegate {
             snapshot.appendItems(images, toSection: .images)
         }
         
-        
         dataSource?.apply(snapshot)
     }
     
     func showError(error: String) {
-        //todo
+        collectionView.isHidden = true
+        errorView.isHidden = false
+        errorView.setTitle(error)
     }
 }
 
@@ -133,32 +143,6 @@ extension LaunchDetailsController {
 
 // MARK: - layout
 extension LaunchDetailsController {
-//    private func createLayout() -> UICollectionViewLayout {
-//        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int,
-//                                                            layoutEnvironment: NSCollectionLayoutEnvironment) ->NSCollectionLayoutSection? in
-//            guard let sections = LaunchDetailsSection(rawValue: sectionIndex) else { return nil }
-//
-//            let groupHeight: NSCollectionLayoutDimension = sections.columnCount == 1 ? .estimated(500) : .fractionalWidth(0.4)
-//
-//            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
-//            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//            if sections.columnCount != 1 {
-//                item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-//            }
-//
-//            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: groupHeight)
-//            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: sections.columnCount)
-//
-//            let section = NSCollectionLayoutSection(group: group)
-//            section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16)
-//
-//            let layoutSectionHeader = self.createSectionHeader()
-//            section.boundarySupplementaryItems = [layoutSectionHeader]
-//            return section
-//        }
-//        return layout
-//    }
-    
     private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let layoutSectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(80))
         let layoutSectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: layoutSectionHeaderSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
@@ -168,66 +152,54 @@ extension LaunchDetailsController {
     private func createLayout()  -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
             guard let section = LaunchDetailsSection(rawValue: sectionIndex) else { return nil }
-
+            
             switch section {
             case .mission:
-                return self.createMissionLayout(columnCount: section.columnCount)
+                return self.getCommonLayout(witdh: .fractionalWidth(1.0),
+                                               height: .estimated(500),
+                                               columnCount: section.columnCount)
             case .rocket:
-                return self.createRocketLayout(columnCount: section.columnCount)
+                let inset = NSDirectionalEdgeInsets(top: 8,leading: 8, bottom: 8, trailing: 8)
+                let layout = self.getCommonLayout(witdh: .fractionalWidth(1.0),
+                                                     height: .fractionalWidth(0.4),
+                                                     columnCount: section.columnCount,
+                                                     itemInset: inset)
+                layout.boundarySupplementaryItems = [self.createSectionHeader()]
+                return layout
+                
             case .images:
-                return self.createImagesLayout()
+                let inset = NSDirectionalEdgeInsets(top: 8,leading: 8, bottom: 8, trailing: 8)
+                let layout = self.getCommonLayout(witdh: .fractionalWidth(0.8),
+                                                     height: .fractionalHeight(0.8),
+                                                     columnCount: 1,
+                                                     itemInset: inset)
+                layout.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                layout.boundarySupplementaryItems = [self.createSectionHeader()]
+                return layout
             }
         }
-
+        
         let config = UICollectionViewCompositionalLayoutConfiguration()
         config.interSectionSpacing = 20
         layout.configuration = config
         return layout
     }
-
-    private func createMissionLayout(columnCount: Int) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(500))
+    
+    private func getCommonLayout(witdh: NSCollectionLayoutDimension, height: NSCollectionLayoutDimension, columnCount: Int, itemInset: NSDirectionalEdgeInsets? = nil) -> NSCollectionLayoutSection {
+        
+        let itemSize = NSCollectionLayoutSize(widthDimension: witdh, heightDimension: height)
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(500))
-
+        if let itemInset = itemInset {
+            item.contentInsets = itemInset
+        }
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: witdh, heightDimension: height)
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columnCount)
-
+        
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16)
-
-        let layoutSectionHeader = self.createSectionHeader()
-        section.boundarySupplementaryItems = [layoutSectionHeader]
-        return section
-    }
-
-    private func createRocketLayout(columnCount: Int) -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.4))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
-
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.4))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columnCount)
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-
-        let layoutSectionHeader = self.createSectionHeader()
-        section.boundarySupplementaryItems = [layoutSectionHeader]
-        return section
-    }
-
-    private func createImagesLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .fractionalWidth(0.8))//.absolute(500))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
-        let layoutSectionHeader = self.createSectionHeader()
-        section.boundarySupplementaryItems = [layoutSectionHeader]
+        
         return section
     }
 }

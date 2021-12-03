@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum DateFormat: String {
+    case iso8601 = "yyyy-MM-dd'T'HH:mm:ss.SSSX"
+}
+
 extension String {
     public func iso8601Date() -> Date? {
         let formatter = DateFormatter()

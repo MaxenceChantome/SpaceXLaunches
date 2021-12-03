@@ -24,15 +24,15 @@ enum LaunchDetailsSection: Int, CaseIterable {
             return 2
         }
     }
- 
+    
     var title: String {
         switch self {
         case .mission:
             return "Mission"
         case .rocket:
-            return "Rocket"
+            return "Rocket data"
         case .images:
-            return "Images"
+            return "Pictures"
         }
     }
 }
@@ -75,10 +75,14 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
                     let rocket = self.getFormattedRocketDetails(rocket: data.rocket)
                     let images = self.getFormattedInages(images: data.links)
                     self.delegate?.reloadData(with: mission, rocket: rocket, images: images)
+                } else if let errors = graphQLResult.errors {
+                    let errorMessage = errors.map { $0.localizedDescription }.joined()
+                    self.delegate?.showError(error: errorMessage)
+                } else {
+                    self.delegate?.showError(error: "No data found")
                 }
-                
             case .failure(let error):
-                print(error)
+                self.delegate?.showError(error: error.localizedDescription)
             }
         }
     }
@@ -87,10 +91,11 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
         guard let mission = mission else { return [LaunchDetailsCells]() }
         
         let date = mission.launchDateUtc?.iso8601Date()
-        let cellData = MissionDetailsCellViewData(name: mission.missionName ?? "Unknown mission",
+        let cellData = MissionDetailsCellViewData(name: mission.missionName ?? "Unknown",
                                                   description: mission.details ?? "No details found for this mission",
-                                                  site: mission.launchSite?.siteNameLong ?? "No site found for this mission",
-                                                  date: date?.string(withFormat: .dayAndYear) ?? "Date not found for this mission")
+                                                  site: mission.launchSite?.siteNameLong ?? "Unknown",
+                                                  date: date?.string(with: .medium) ?? "Unknown"
+        )
         
         return [LaunchDetailsCells.missionDetails(cellData)]
     }
@@ -99,14 +104,22 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
         guard let rocket = rocket else { return [LaunchDetailsCells]() }
         
         let cellData = [
-            RocketDetailsCellViewData(value: rocket.rocketName ?? "Unkown", detail: "Name"),
-            RocketDetailsCellViewData(value: rocket.rocketType ?? "Unkown", detail: "Type"),
-            RocketDetailsCellViewData(value: "\(rocket.rocket?.height?.meters ?? 0) meters", detail: "Height"),
-            RocketDetailsCellViewData(value: "\(rocket.rocket?.mass?.kg ?? 0) kg", detail: "Mass"),
-            RocketDetailsCellViewData(value: "\(rocket.rocket?.diameter?.meters ?? 0) meters", detail: "Diameter"),
-            RocketDetailsCellViewData(value: "\(rocket.rocket?.engines?.number ?? 0)", detail: "Engines"),
-            RocketDetailsCellViewData(value: "\(rocket.rocket?.costPerLaunch ?? 0) $", detail: "Cost per launch"),
-            RocketDetailsCellViewData(value: "\(rocket.rocket?.successRatePct ?? 0) %", detail: "Success rate")
+            RocketDetailsCellViewData(value: rocket.rocketName ?? "Unkown",
+                                      detail: "Name"),
+            RocketDetailsCellViewData(value: rocket.rocketType ?? "Unkown",
+                                      detail: "Type"),
+            RocketDetailsCellViewData(value: rocket.rocket?.height?.meters?.formattedLength() ?? "0",
+                                      detail: "Height"),
+            RocketDetailsCellViewData(value: rocket.rocket?.mass?.kg?.formattedMass() ?? "0",
+                                      detail: "Mass"),
+            RocketDetailsCellViewData(value: rocket.rocket?.diameter?.meters?.formattedLength() ?? "0",
+                                      detail: "Diameter"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.engines?.number ?? 0)",
+                                      detail: "Engines"),
+            RocketDetailsCellViewData(value: rocket.rocket?.costPerLaunch?.formattedCurrency() ?? "0",
+                                      detail: "Cost per launch"),
+            RocketDetailsCellViewData(value: "\(rocket.rocket?.successRatePct ?? 0) %",
+                                      detail: "Success rate")
         ]
         return cellData.map { LaunchDetailsCells.rocketDetails($0) }
     }
@@ -119,4 +132,3 @@ class LaunchDetailsViewModel: LaunchDetailsViewModelType {
         return cellData.map { LaunchDetailsCells.images($0) }
     }
 }
-

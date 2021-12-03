@@ -46,3 +46,19 @@ extension UIView {
         NSLayoutConstraint.activate(constraints)
     }
 }
+
+extension UIStackView {
+    convenience init(withDirection axis: NSLayoutConstraint.Axis = .vertical, distribution: UIStackView.Distribution = .fillEqually, alignment: UIStackView.Alignment = .fill, spacing: CGFloat = 0.0) {
+        self.init(frame: .zero)
+        self.axis = axis
+        self.distribution = distribution
+        self.alignment = alignment
+        self.spacing = spacing
+    }
+    
+    func addArrangedSubviews(_ views: [UIView]) {
+        for i in 0..<views.count {
+            addArrangedSubview(views[i])
+        }
+    }
+}

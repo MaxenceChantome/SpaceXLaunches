@@ -55,6 +55,8 @@ class LaunchesListViewModel: LaunchesListViewModelType {
                 } else if let errors = graphQLResult.errors {
                     let errorMessage = errors.map { $0.localizedDescription }.joined()
                     self.delegate?.showError(error: errorMessage)
+                } else {
+                    self.delegate?.showError(error: "No data found")
                 }
             case .failure(let error):
                 self.delegate?.showError(error: error.localizedDescription)
@@ -67,21 +69,17 @@ class LaunchesListViewModel: LaunchesListViewModelType {
         return launches[row]?.id
     }
     
-    var count = 0
-    
     private func handleLaunches(launches: [LaunchListQuery.Data.LaunchesPast?]) {
         var cells = [LaunchesListCells]()
-        count += 1
         
         for launch in launches {
             let date = launch?.launchDateUtc?.iso8601Date()
             let url = launch?.links?.missionPatchSmall
             
-            let viewData = LaunchCellViewData(
-                missionName: launch?.missionName ?? "Unknown mission",
-                rocketInfos: launch?.rocket?.rocketName ?? "Unknown rocket",
-                date: date?.string(withFormat: .dayAndYear) ?? "Unknown date",
-                patchImage: url != nil ? URL(string: url!) : nil
+            let viewData = LaunchCellViewData(missionName: launch?.missionName ?? "Unknown mission",
+                                              rocketInfos: launch?.rocket?.rocketName ?? "Unknown rocket",
+                                              date: date?.string(with: .none) ?? "Unknown date",
+                                              patchImage: url != nil ? URL(string: url!) : nil
             )
             
             cells.append(LaunchesListCells.launch(viewData))

@@ -43,6 +43,8 @@
 		D46716752759166E0041DD14 /* RocketDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46716742759166E0041DD14 /* RocketDetailsCell.swift */; };
 		D467167727594CDC0041DD14 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467167627594CDC0041DD14 /* SectionHeader.swift */; };
 		D4671679275967D70041DD14 /* ImageDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4671678275967D70041DD14 /* ImageDetailsCell.swift */; };
+		D467167B275A55F00041DD14 /* Int+Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467167A275A55F00041DD14 /* Int+Double.swift */; };
+		D467167D275A81F90041DD14 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D467167C275A81F90041DD14 /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +104,8 @@
 		D46716742759166E0041DD14 /* RocketDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketDetailsCell.swift; sourceTree = "<group>"; };
 		D467167627594CDC0041DD14 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		D4671678275967D70041DD14 /* ImageDetailsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailsCell.swift; sourceTree = "<group>"; };
+		D467167A275A55F00041DD14 /* Int+Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Double.swift"; sourceTree = "<group>"; };
+		D467167C275A81F90041DD14 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +252,7 @@
 				D46716642757ED410041DD14 /* String.swift */,
 				D46716662757F2910041DD14 /* UIImageView.swift */,
 				D467166F2758EC620041DD14 /* UIButton.swift */,
+				D467167A275A55F00041DD14 /* Int+Double.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				D467166D2758E85F0041DD14 /* EmptyStateView.swift */,
+				D467167C275A81F90041DD14 /* CardView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -442,6 +448,8 @@
 				D46716482757929D0041DD14 /* Router.swift in Sources */,
 				D46716562757B2920041DD14 /* UIFont.swift in Sources */,
 				D467166E2758E85F0041DD14 /* EmptyStateView.swift in Sources */,
+				D467167B275A55F00041DD14 /* Int+Double.swift in Sources */,
+				D467167D275A81F90041DD14 /* CardView.swift in Sources */,
 				D46716652757ED410041DD14 /* String.swift in Sources */,
 				D467164B275792AD0041DD14 /* UIColor.swift in Sources */,
 				D467167727594CDC0041DD14 /* SectionHeader.swift in Sources */,

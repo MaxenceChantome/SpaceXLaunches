@@ -28,8 +28,8 @@ class AppNavigationController: UINavigationController {
         navigationBar.prefersLargeTitles = true
         navigationBar.barTintColor = .primary
         navigationBar.isTranslucent = false
-        navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationBar.tintColor = .white
+        navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.text]
+        navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.text]
+        navigationBar.tintColor = .text
     }
 }

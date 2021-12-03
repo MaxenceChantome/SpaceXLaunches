@@ -22,9 +22,8 @@ struct LaunchCellViewData: Hashable {
 }
 
 class LaunchCell: UITableViewCell {
-    private let missionNameLabel = UILabel(title: nil, font: .title, color: .white, lines: 0, alignment: .left)
-    private let rocketInfosLabel =  UILabel(title: nil, font: .subtitle, color: .white, lines: 0, alignment: .left)
-    private let dateLabel = UILabel(title: nil, font: .bodyMedium, color: .white, lines: 0, alignment: .right)
+    private let missionNameLabel = UILabel(title: nil, font: .subtitle, color: .text, lines: 0, alignment: .left)
+    private let infosLabel =  UILabel(title: nil, font: .caption, color: .lightText, lines: 0, alignment: .left)
     private let patchImageView = UIImageView(contentMode: .scaleAspectFit)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -40,36 +39,27 @@ class LaunchCell: UITableViewCell {
     }
     
     private func setupUI() {
-        contentView.addSubviews([missionNameLabel, rocketInfosLabel, dateLabel, patchImageView])
+        let cardView = CardView()
+        let dataView = UIStackView(withDirection: .vertical, distribution: .fill, alignment: .fill, spacing: 4)
+        
+        dataView.addArrangedSubviews([missionNameLabel, infosLabel])
+        contentView.addSubviews([cardView, dataView])
+        cardView.addSubviews([patchImageView, dataView])
         
         patchImageView.bindConstraints([
-            patchImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            patchImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
-            patchImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            patchImageView.widthAnchor.constraint(equalToConstant: 75)
+            patchImageView.leftAnchor.constraint(equalTo: cardView.leftAnchor, constant: 16),
+            patchImageView.widthAnchor.constraint(equalToConstant: 50),
+            patchImageView.heightAnchor.constraint(equalToConstant: 50),
+            patchImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor)
         ])
-        // fix autolayout constraint
-        let constraint = patchImageView.heightAnchor.constraint(equalToConstant: 75)
-        constraint.priority = .defaultHigh
-        constraint.isActive = true
-
-        
-        missionNameLabel.bindConstraints([
-            missionNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            missionNameLabel.leftAnchor.constraint(equalTo: patchImageView.rightAnchor, constant: 16),
-            missionNameLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
-        ])
-        rocketInfosLabel.bindConstraints([
-            rocketInfosLabel.topAnchor.constraint(equalTo: missionNameLabel.bottomAnchor, constant: 8),
-            rocketInfosLabel.leftAnchor.constraint(equalTo: patchImageView.rightAnchor, constant: 16),
-            rocketInfosLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16)
-        ])
-        dateLabel.bindConstraints([
-            dateLabel.leftAnchor.constraint(equalTo: patchImageView.rightAnchor, constant: 16),
-            dateLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
-            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+        dataView.bindConstraints([
+            dataView.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
+            dataView.leftAnchor.constraint(equalTo: patchImageView.rightAnchor, constant: 16),
+            dataView.rightAnchor.constraint(equalTo: cardView.rightAnchor, constant: -16),
+            dataView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -16)
         ])
         
+        cardView.bindConstraintsToSuperview(UIEdgeInsets(top: 4, left: 20, bottom: -4, right: -20))
     }
     
     override func prepareForReuse() {
@@ -80,8 +70,8 @@ class LaunchCell: UITableViewCell {
     
     func configure(with data: LaunchCellViewData) {
         missionNameLabel.text = data.missionName
-        rocketInfosLabel.text = data.rocketInfos
-        dateLabel.text = data.date
+        
+        infosLabel.text = "\(data.rocketInfos) - \(data.date)"
         if let url = data.patchImage {
             patchImageView.loadImage(at: url)
         }

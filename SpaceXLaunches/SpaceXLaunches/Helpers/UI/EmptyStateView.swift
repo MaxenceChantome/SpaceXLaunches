@@ -1,5 +1,5 @@
 //
-//  EmptyStateView.swift
+//  ErrorView.swift
 //  SpaceXLaunches
 //
 //  Created by Maxence Chantôme on 02/12/2021.
@@ -7,17 +7,17 @@
 
 import UIKit
 
-protocol EmptyStateViewType {
+protocol ErrorViewType {
     var onRetry: (() -> Void)? { get set }
     func setTitle(_ title: String)
 }
 
-class EmptyStateView: UIView, EmptyStateViewType {
+class ErrorView: UIView, ErrorViewType {
     var onRetry: (() -> Void)?
     
-    private let titleLabel = UILabel(title: nil, font: .title, color: .white, lines: 0, alignment: .center)
+    private let titleLabel = UILabel(title: nil, font: .title, color: .text, lines: 0, alignment: .center)
     
-    private let retryButton = UIButton(title: "Retry", font: .subtitle, textColor: .white, backgroundColor: .primary)
+    private let retryButton = UIButton(title: "Retry", font: .subtitle, textColor: .text, backgroundColor: .white)
     
     init() {
         super.init(frame: .zero)
@@ -37,7 +37,6 @@ class EmptyStateView: UIView, EmptyStateViewType {
             titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
             titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -16),
         ])
-        retryButton.cornerRadius = 25
         retryButton.bindConstraints([
             retryButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             retryButton.centerYAnchor.constraint(equalTo: centerYAnchor),
