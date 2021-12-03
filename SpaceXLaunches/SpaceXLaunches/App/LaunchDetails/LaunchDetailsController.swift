@@ -31,6 +31,12 @@ class LaunchDetailsController: UIViewController, LaunchDetailsControllerType {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,10 +78,13 @@ extension LaunchDetailsController: LaunchDetailsDelegate {
     func reloadData(with mission: [LaunchDetailsCells], rocket: [LaunchDetailsCells], images: [LaunchDetailsCells]) {
         var snapshot = Snapshot()
         
-        snapshot.appendSections(LaunchDetailsSection.allCases)
+        snapshot.appendSections([.mission, .rocket])
         snapshot.appendItems(mission, toSection: .mission)
         snapshot.appendItems(rocket, toSection: .rocket)
-        snapshot.appendItems(images, toSection: .images)
+        if !images.isEmpty {
+            snapshot.appendSections([.images])
+            snapshot.appendItems(images, toSection: .images)
+        }
         
         
         dataSource?.apply(snapshot)
@@ -185,7 +194,7 @@ extension LaunchDetailsController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columnCount)
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 16, trailing: 16)
 
         let layoutSectionHeader = self.createSectionHeader()
         section.boundarySupplementaryItems = [layoutSectionHeader]
@@ -201,7 +210,7 @@ extension LaunchDetailsController {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columnCount)
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 0, trailing: 16)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
 
         let layoutSectionHeader = self.createSectionHeader()
         section.boundarySupplementaryItems = [layoutSectionHeader]
@@ -211,13 +220,14 @@ extension LaunchDetailsController {
     private func createImagesLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(500))
+        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .fractionalWidth(0.8))//.absolute(500))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 10
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
+        let layoutSectionHeader = self.createSectionHeader()
+        section.boundarySupplementaryItems = [layoutSectionHeader]
         return section
     }
 }

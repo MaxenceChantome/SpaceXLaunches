@@ -28,9 +28,9 @@ enum LaunchDetailsSection: Int, CaseIterable {
     var title: String {
         switch self {
         case .mission:
-            return "Mission details"
+            return "Mission"
         case .rocket:
-            return "Rocket details"
+            return "Rocket"
         case .images:
             return "Images"
         }

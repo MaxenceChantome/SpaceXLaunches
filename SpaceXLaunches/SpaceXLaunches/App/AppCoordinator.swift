@@ -17,8 +17,14 @@ class AppCoordinator: Coordinator {
     }
     
     func start(with deeplink: DeepLink?) {
-        //todo
-        showLaunchesList()
+        guard let deeplink = deeplink else {
+            showLaunchesList()
+            return
+        }
+        switch deeplink {
+        case .rocket(let id):
+            showLaunchDetail(id: id)
+        }
     }
     
     private func showLaunchesList() {

@@ -26,4 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func makeCoordinator() -> Coordinator {
         return AppCoordinator(router: Router(rootController: rootController), apiService: ApiService())
     }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+   
+            var parameters: [String: String] = [:]
+            URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.forEach {
+                parameters[$0.name] = $0.value
+            }
+        
+            if let id = parameters["id"] {
+                applicationCoordinator.start(with: DeepLink.rocket(id: id))
+            }
+        return true
+    }
 }
